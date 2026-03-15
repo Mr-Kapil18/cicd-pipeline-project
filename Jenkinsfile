@@ -1,19 +1,30 @@
 pipeline {
-  agent any 
+  agent any
+
   tools {
     maven 'Maven'
-  }  
+  }
+
   stages {
-   stage ('Initialize') {
+
+    stage('Initialize') {
       steps {
         sh '''
-                  echo "PATH = ${PATH}"
-                  echo "M2_HOME = ${M2_HOME}"
-           '''
+          echo "PATH = ${PATH}"
+          echo "M2_HOME = ${M2_HOME}"
+        '''
       }
     }
+
+    stage('Build') {
+      steps {
+        sh 'mvn clean package'
+      }
+    }
+
   }
 }
+
    // stage ('Check-Git-Secrets') {
    //   steps {
    //     sh ' trufflehog3 -f json https://github.com/electro-16/webapp.git -o trufflehog_output.json || true '
@@ -52,11 +63,7 @@ pipeline {
 //      }
 //    }
 	  
-   stage ('Build') {
-     steps {
-       sh 'mvn clean package'
-     }
-    }
+   
    // stage ('Deploy-To-Tomcat') {
    //   steps  {
    //     sshagent (['tomcat']) {
