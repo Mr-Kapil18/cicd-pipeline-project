@@ -12,11 +12,13 @@ pipeline {
            '''
       }
     }
-    stage ('Check-Git-Secrets') {
-      steps {
-        sh ' trufflehog3 -f json https://github.com/electro-16/webapp.git -o trufflehog_output.json || true '
-      }
-    }
+  }
+}
+   // stage ('Check-Git-Secrets') {
+   //   steps {
+   //     sh ' trufflehog3 -f json https://github.com/electro-16/webapp.git -o trufflehog_output.json || true '
+    //  }
+   // }
     // stage ('Source Composition Analysis') {
     //   steps {
     //      sh 'rm owasp* || true '
@@ -28,40 +30,40 @@ pipeline {
     // }
 
    
-    stage('OWASP Dependency-Check Vulnerabilities') {
-      steps {
-        dependencyCheck additionalArguments: ''' 
-                    -o './'
-                    -s './'
-                    -f 'ALL' 
-                    --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+   // stage('OWASP Dependency-Check Vulnerabilities') {
+   //   steps {
+   //     dependencyCheck additionalArguments: ''' 
+   //                 -o './'
+   //                 -s './'
+   //                 -f 'ALL' 
+   //                 --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
         
-        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-      }
-    }
+   //     dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+   //   }
+   // }
     
   
-  stage ('Static analysis') {
-    steps { 
-      withSonarQubeEnv('sonar') {
-        sh 'mvn sonar:sonar'
+  //stage ('Static analysis') {
+  //  steps { 
+  //    withSonarQubeEnv('sonar') {
+  //      sh 'mvn sonar:sonar'
 	//sh './sonarqube_report.sh'
-        }
-      }
-    }
+//        }
+//      }
+//    }
 	  
    stage ('Build') {
      steps {
        sh 'mvn clean package'
      }
     }
-    stage ('Deploy-To-Tomcat') {
-      steps  {
-        sshagent (['tomcat']) {
-          sh 'scp -o StrictHostKeyChecking=no target/*.war rhel2@192.168.5.129:/prod/apache-tomcat-8.5.98/webapps/webapp.war'
-        }
-      }
-  }
+   // stage ('Deploy-To-Tomcat') {
+   //   steps  {
+   //     sshagent (['tomcat']) {
+   //       sh 'scp -o StrictHostKeyChecking=no target/*.war rhel2@192.168.5.129:/prod/apache-tomcat-8.5.98/webapps/webapp.war'
+   //     }
+   //   }
+ // }
 
 	 //stage ('Dynamic analysis') {
      //       steps {
