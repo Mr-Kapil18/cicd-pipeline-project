@@ -63,7 +63,6 @@ pipeline {
 //    }
 	  
    
-      stages {
         stage('Deploy-To-Tomcat') {
             steps {
                 sshagent(['tomcat']) {
@@ -71,7 +70,6 @@ pipeline {
                 }
             }
         }
-    }
 
 	 //stage ('Dynamic analysis') {
      //       steps {
