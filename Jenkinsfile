@@ -22,6 +22,13 @@ pipeline {
       }
     }
 
+	  stage('Test-SSH') {
+  steps {
+    sshagent(['tomcat']) {
+      sh 'ssh -o StrictHostKeyChecking=no kapil@192.168.5.129 "hostname && whoami"'
+    }
+  }
+}
 	stage('Deploy-To-Tomcat') {
 		steps {
             sshagent(['tomcat']) {
