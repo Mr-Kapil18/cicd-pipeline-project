@@ -6,12 +6,12 @@ pipeline {
   }
 
   stages {
-
     stage('Initialize') {
       steps {
         sh '''
-          echo "PATH = ${PATH}"
-          echo "M2_HOME = ${M2_HOME}"
+          echo "PATH=$PATH"
+          echo "M2_HOME=$M2_HOME"
+          mvn -version
         '''
       }
     }
@@ -21,7 +21,6 @@ pipeline {
         sh 'mvn clean package'
       }
     }
-
   }
 }
 
