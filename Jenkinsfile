@@ -63,13 +63,16 @@ pipeline {
 //    }
 	  
    
-   // stage ('Deploy-To-Tomcat') {
-   //   steps  {
-   //     sshagent (['tomcat']) {
-   //       sh 'scp -o StrictHostKeyChecking=no target/*.war rhel2@192.168.5.129:/prod/apache-tomcat-8.5.98/webapps/webapp.war'
-   //     }
-   //   }
- // }
+      stages {
+        stage('Deploy-To-Tomcat') {
+            steps {
+                sshagent(['tomcat']) {
+                    sh 'scp -o StrictHostKeyChecking=no target/*.war rhel2@192.168.5.129:/opt/tomcat/webapps/webapp.war'
+                }
+            }
+        }
+    }
+}
 
 	 //stage ('Dynamic analysis') {
      //       steps {
