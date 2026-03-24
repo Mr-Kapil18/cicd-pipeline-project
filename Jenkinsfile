@@ -21,9 +21,16 @@ pipeline {
         sh 'mvn clean package'
       }
     }
+
+	stage('Deploy-To-Tomcat') {
+		steps {
+            sshagent(['tomcat']) {
+                sh 'scp -o StrictHostKeyChecking=no target/*.war rhel2@192.168.5.129:/opt/tomcat/webapps/webapp.war'
+                }
+            }
+        }
   }
 }
-
    // stage ('Check-Git-Secrets') {
    //   steps {
    //     sh ' trufflehog3 -f json https://github.com/electro-16/webapp.git -o trufflehog_output.json || true '
@@ -63,13 +70,6 @@ pipeline {
 //    }
 	  
    
-        stage('Deploy-To-Tomcat') {
-            steps {
-                sshagent(['tomcat']) {
-                    sh 'scp -o StrictHostKeyChecking=no target/*.war rhel2@192.168.5.129:/opt/tomcat/webapps/webapp.war'
-                }
-            }
-        }
 
 	 //stage ('Dynamic analysis') {
      //       steps {
